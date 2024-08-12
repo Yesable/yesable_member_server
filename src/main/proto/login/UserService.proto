@@ -1,0 +1,159 @@
+syntax="proto3";
+
+option java_multiple_files = true;
+option java_package= "com.example.grpc";
+option java_outer_classname = "UserServiceProto";
+
+package user;
+
+service UserService {
+    rpc RegisterUser(RegisterUserRequest) returns (RegisterUserResponse);
+}
+
+message RegisterUserRequest {
+  oneof user { //user는 기업또는 개인을 나타내는 필드
+    PrivateUserGRPC private_user = 1;
+    CompanyUserGRPC company_user = 2;
+  }
+}
+
+message RegisterUserResponse {
+  string message = 1;
+  bool success = 2;
+}
+
+message CoreUserGRPC {
+  int64 id=1;
+  string password=2;
+  string email=3;
+  string phoneNumber=4;
+  string name=5;
+
+  enum Gender{
+      Gender_NULL=0;
+      MALE=1;
+      FEMALE=2;
+      ETC=3;
+  }
+
+  Gender gender=6;
+  string dateOfBirth=7;
+  repeated string authorities=8;
+}
+
+message PrivateUserGRPC {
+  CoreUserGRPC core_user = 1;
+  string username=2;
+  string location=3;
+
+  enum InterestField {
+      FOOD=0;
+      RETAIL=1;
+      CULTURE=2;
+      SERVICE=3;
+      AFFAIR=4;
+      SALES=5;
+      MANUFACTURE=6;
+      IT=7;
+      DESIGN=8;
+      DRIVE=9;
+      EDUCATION=10;
+      HOSPITAL=11;
+      MEDIA=12;
+  }
+  repeated InterestField interestField=4;
+
+  enum WorkType {
+      PARTTIMEJOB=0;
+      INTERN=1;
+      CONTRACT=2;
+      FULLTIME=3;
+
+  }
+  repeated WorkType workType=5;
+
+
+  repeated string skills=6;
+  enum Educationlevel {
+      CHOJOL=0;
+      JUNGJOL=1;
+      GOJOL=2;
+      UNIV23=3;
+      UNIV4=4;
+      GRADUATESCHOOL=5;
+
+  }
+  Educationlevel educationlevel = 7;
+  string personality=8;
+  string hobbies=9;
+  string supportneeds=10;
+
+  enum Disabilitytype {
+
+    PHYSICAL_DISABILITY_MOBILITY_IMPAIRED = 0;
+    PHYSICAL_DISABILITY_BRAIN_LESSON = 1;
+    PHYSICAL_DISABILITY_VISUAL_IMPAIRED = 2;
+    PHYSICAL_DISABILITY_HEARING_IMPAIRED = 3;
+    PHYSICAL_DISABILITY_SPEECH_IMPAIRED = 4;
+    PHYSICAL_DISABILITY_FACIAL_IMPAIRED = 5;
+
+    // Physical Disabilities - Internal
+    PHYSICAL_DISABILITY_KIDNEY_IMPAIRED = 6;
+    PHYSICAL_DISABILITY_HEART_IMPAIRED = 7;
+    PHYSICAL_DISABILITY_RESPIRATORY_IMPAIRED = 8;
+    PHYSICAL_DISABILITY_LIVER_IMPAIRED = 9;
+    PHYSICAL_DISABILITY_STOMA_IMPAIRED = 10;
+    PHYSICAL_DISABILITY_EPILEPSY_IMPAIRED = 11;
+
+    // Mental Disabilities
+    MENTAL_DISABILITY_INTELLECTUAL_IMPAIRED = 12;
+    MENTAL_DISABILITY_MENTAL_IMPAIRED = 13;
+    MENTAL_DISABILITY_AUTISM_IMPAIRED = 14;
+
+
+  }
+  Disabilitytype disabilitytype=11;
+  repeated ExperienceGRPC experiences=12;
+}
+
+message CompanyUserGRPC {
+  CoreUserGRPC core_user = 1;
+  string businessnumber=2;
+  string ceoname=3;
+  string businessarea=4;
+
+  enum Compclass {
+      SMALL=0;
+      MIDDLE=1;
+      BIG=2;
+  }
+  string compclass=5;
+  string hr_name=6;
+  string hr_phone=7;
+  string hr_email=8;
+
+}
+
+message ExperienceGRPC {
+  int64 id=1;
+  PrivateUserGRPC privateuser=2;
+
+  enum Experiencetype {
+    Experiencetype_NULL=0;
+    NOEXPERIENCE=1;
+    YESEXPERIENCE=2;
+  }
+
+  Experiencetype experiencetype=3;
+  string companyname=4;
+  LocalDateGRPC startdate=5;
+  LocalDateGRPC enddate=6;
+  string department=7;
+  string jobdescription=8;
+}
+
+message LocalDateGRPC {
+  int32 year=1;
+  int32 month=2;
+  int32 day=3;
+}
