@@ -73,4 +73,7 @@ public class MemberService extends UserServiceGrpc.UserServiceImplBase{
         responseobserver.onCompleted();
 
     }
+
+
+    //id, passwd가 오면 이 유저가 있는지 없는지, 있으면 id 없으면 null이나 error나
 }

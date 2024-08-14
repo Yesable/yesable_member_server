@@ -1,17 +1,18 @@
 
-/*
+
 package yesable.member.client;
 
 import com.example.grpc.*;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import yesable.member.enums.user.Gender;
 
 
 public class MemberClient { //백엔드 단에서만 사용하는 gRPC 테스트 클라이언트
 
     public static void main(String[] args) {
 
-        ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 9090)
+        ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 53750)
                 .usePlaintext()
                 .build();
 
@@ -19,12 +20,12 @@ public class MemberClient { //백엔드 단에서만 사용하는 gRPC 테스트
 
         // 예시: PrivateUser 등록
         CoreUserGRPC coreUser = CoreUserGRPC.newBuilder()
-                .setId("john_doe")
+                .setId(214L)
                 .setPassword("password123")
                 .setEmail("john.doe@example.com")
                 .setPhoneNumber("123-456-7890")
                 .setName("John Doe")
-                .setGender("Male")
+                .setGender(CoreUserGRPC.Gender.MALE)
                 .setDateOfBirth("1985-05-15")
                 .build();
 
@@ -32,16 +33,16 @@ public class MemberClient { //백엔드 단에서만 사용하는 gRPC 테스트
                 .setCoreUser(coreUser)
                 .setUsername("johnny")
                 .setLocation("New York")
-                .addInterestField("IT")
-                .addInterestField("Music")
-                .addWorkType("Full-Time")
+                .addInterestField(PrivateUserGRPC.InterestField.IT)
+                .addInterestField(PrivateUserGRPC.InterestField.SALES)
+                .addWorkType(PrivateUserGRPC.WorkType.INTERN)
                 .addSkills("Java")
                 .addSkills("Spring")
-                .setEducation("Bachelor")
+                .setEducationlevel(PrivateUserGRPC.Educationlevel.GOJOL)
                 .setPersonality("Outgoing")
                 .setHobbies("Gaming")
                 .setSupportneeds("None")
-                .setDisabilitytype("None")
+                .setDisabilitytype(PrivateUserGRPC.Disabilitytype.MENTAL_DISABILITY_AUTISM_IMPAIRED)
                 .build();
 
         RegisterUserRequest request = RegisterUserRequest.newBuilder()
@@ -56,4 +57,3 @@ public class MemberClient { //백엔드 단에서만 사용하는 gRPC 테스트
         channel.shutdown();
     }
 }
-*/
