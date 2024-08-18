@@ -1,26 +1,27 @@
-
-/*
-package yesable.member.client;
-
 import com.example.grpc.*;
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
+import com.netflix.discovery.converters.Auto;
 import net.devh.boot.grpc.client.inject.GrpcClient;
-import yesable.member.enums.user.Gender;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit4.SpringRunner;
+import yesable.member.Main;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+@ExtendWith(SpringExtension.class)
+@SpringBootTest(classes= Main.class)
+public class MemberRegisterTest {
 
 
-public class MemberClient { //백엔드 단에서만 사용하는 gRPC 테스트 클라이언트
+    @Autowired
+    UserServiceGrpc.UserServiceBlockingStub stub;
 
-    public static void main(String[] args) {
-
-        ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 9090)
-                .usePlaintext()
-                .build();
-
-
-        UserServiceGrpc.UserServiceBlockingStub stub = UserServiceGrpc.newBlockingStub(channel);
-
-        // 예시: PrivateUser 등록
+    @Test
+    public void RegisterTest() {
         CoreUserGRPC coreUser = CoreUserGRPC.newBuilder()
                 .setId(214L)
                 .setPassword("password123")
@@ -53,10 +54,7 @@ public class MemberClient { //백엔드 단에서만 사용하는 gRPC 테스트
 
         RegisterUserResponse response = stub.registerUser(request);
 
-        System.out.println(response.getMessage());
-        System.out.println("Success: " + response.getSuccess());
+        assertTrue(response.getSuccess(),"true가 나왔음");
 
-        channel.shutdown();
     }
 }
-*/

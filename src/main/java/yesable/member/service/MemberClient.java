@@ -1,18 +1,22 @@
-
 /*
-package yesable.member.client;
+package yesable.member.service;
+
 
 import com.example.grpc.*;
+import io.grpc.BindableService;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import net.devh.boot.grpc.client.inject.GrpcClient;
-import yesable.member.enums.user.Gender;
+import net.devh.boot.grpc.server.service.GrpcService;
+import org.springframework.stereotype.Service;
 
+@Service
+public class MemberClient  {
 
-public class MemberClient { //백엔드 단에서만 사용하는 gRPC 테스트 클라이언트
+    @GrpcClient("register")
+    private UserServiceGrpc.UserServiceBlockingStub stub;
 
-    public static void main(String[] args) {
-
+    public RegisterUserResponse getRegister(String coreName) {
         ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 9090)
                 .usePlaintext()
                 .build();
@@ -26,7 +30,7 @@ public class MemberClient { //백엔드 단에서만 사용하는 gRPC 테스트
                 .setPassword("password123")
                 .setEmail("john.doe@example.com")
                 .setPhoneNumber("123-456-7890")
-                .setName("John Doe")
+                .setName(coreName)
                 .setGender(CoreUserGRPC.Gender.MALE)
                 .setDateOfBirth("1985-05-15")
                 .build();
@@ -47,7 +51,7 @@ public class MemberClient { //백엔드 단에서만 사용하는 gRPC 테스트
                 .setDisabilitytype(PrivateUserGRPC.Disabilitytype.MENTAL_DISABILITY_AUTISM_IMPAIRED)
                 .build();
 
-        RegisterUserRequest request = RegisterUserRequest.newBuilder()
+        request = RegisterUserRequest.newBuilder()
                 .setPrivateUser(privateUser)
                 .build();
 
@@ -57,6 +61,9 @@ public class MemberClient { //백엔드 단에서만 사용하는 gRPC 테스트
         System.out.println("Success: " + response.getSuccess());
 
         channel.shutdown();
+        return response;
     }
-}
-*/
+
+
+
+}*/
