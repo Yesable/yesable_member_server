@@ -3,9 +3,7 @@ package yesable.member.model.entity.mariadb.user;
 
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.*;
 import yesable.member.enums.user.Disabilitytype;
 import yesable.member.enums.user.Educationlevel;
 import yesable.member.enums.user.Interestfield;
@@ -17,6 +15,7 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Getter
+@Setter
 public class PrivateUser extends CoreUser {
 
     private String username;
@@ -33,7 +32,7 @@ public class PrivateUser extends CoreUser {
     private Set<String> skills; //자격증
 
     @Enumerated(EnumType.STRING)
-    private Educationlevel education;
+    private Educationlevel educationlevel;
 
     private String personality; //개인 성격
 
@@ -46,5 +45,7 @@ public class PrivateUser extends CoreUser {
 
     @OneToMany(mappedBy = "privateUser", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Experience> experiences;
+
+
 
 }

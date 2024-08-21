@@ -23,17 +23,16 @@ message RegisterUserResponse {
 }
 
 message CoreUserGRPC {
-  int64 id=1;
+  string id=1; //엔티티의 id가 아니라 qwer같은 아이디
   string password=2;
   string email=3;
   string phoneNumber=4;
   string name=5;
 
   enum Gender{
-      Gender_NULL=0;
-      MALE=1;
-      FEMALE=2;
-      ETC=3;
+      MALE=0;
+      FEMALE=1;
+      ETC=2;
   }
 
   Gender gender=6;

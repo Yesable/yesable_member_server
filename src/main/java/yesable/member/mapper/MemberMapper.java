@@ -39,18 +39,19 @@ public interface MemberMapper {
     @Mapping(source = "interestFieldList", target = "interestField")
     @Mapping(source = "workTypeList", target = "workType")
     @Mapping(source = "skillsList", target = "skills")
-    @Mapping(source = "experiencesList",target="experiences")
+    @Mapping(source = "experiencesList",target="experiences") //이하 super의 coreuser관련
+    @Mapping(source="coreUser.id",target="id")
+    @Mapping(source="coreUser.password",target="password")
+    @Mapping(source="coreUser.email",target="email")
+    @Mapping(source="coreUser.phoneNumber",target="phoneNumber")
+    @Mapping(source="coreUser.name",target="name")
+    @Mapping(source="coreUser.gender",target="gender")
+    @Mapping(source="coreUser.dateOfBirth",target="dateOfBirth")
+    @Mapping(source="coreUser.authoritiesList",target="authorities")
     PrivateUserDTO grpcToDto(PrivateUserGRPC grpc);
 
     PrivateUser dtoToEntity(PrivateUserDTO dto);
 
-
-    @Mapping(source="hrName",target="hr_name")
-    @Mapping(source="hrPhone",target="hr_phone")
-    @Mapping(source="hrEmail",target="hr_email")
-    CompanyUserDTO grpcToDto(CompanyUserGRPC grpc);
-
-    CompanyUser dtoToEntity(CompanyUserDTO dto);
 
 
     //---------------------------------------이하 추가 매핑 메소드-------------------------- f
@@ -91,6 +92,9 @@ public interface MemberMapper {
 
     @ValueMapping(source="UNRECOGNIZED", target="UNKNOWN")
     Interestfield map(PrivateUserGRPC.InterestField interestField);
+
+    @ValueMapping(source = "UNRECOGNIZED",target = "UNKNOWN")
+    Gender map(CoreUserGRPC.Gender gender);
 
 
 

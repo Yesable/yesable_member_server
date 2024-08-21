@@ -3,6 +3,7 @@ package yesable.member.service;
 
 
 
+import com.example.grpc.PrivateUserGRPC;
 import com.example.grpc.RegisterUserRequest;
 import com.example.grpc.RegisterUserResponse;
 import com.example.grpc.UserServiceGrpc;
@@ -39,26 +40,39 @@ public class MemberService extends UserServiceGrpc.UserServiceImplBase{
         boolean result=false;
 
         if(request.hasPrivateUser()) {
+            String hoo = request.getPrivateUser().getHobbies();
+            System.out.println(hoo+"\n\n\n");
+
             PrivateUserDTO privateuserdto=memberMapper.grpcToDto(request.getPrivateUser());
-            CoreUser coreuser=memberMapper.toEntity(privateuserdto);
+            System.out.println(privateuserdto.getHobbies()+"DTO \n\n\n");
+            System.out.println(request.getPrivateUser().getCoreUser().getEmail()+" GRPC \n\n\n");
             PrivateUser privateuser=memberMapper.dtoToEntity(privateuserdto);
 
-            coreUserRepository.save(coreuser);
+
             privateUserRepository.save(privateuser);
 
-            message= "Private User "+coreuser.getId()+" registered successfully";
+            message = "Private User registered successfully with details:\n" +
+                    "CoreUser:\n" +
+                    "  ID: " + privateuser.getId() + "\n" +
+                    "  Email: " + privateuser.getEmail() + "\n" +
+                    "  Phone Number: " + privateuser.getPhoneNumber() + "\n" +
+                    "  Name: " + privateuser.getName() + "\n" +
+                    "  Gender: " + privateuser.getGender() + "\n" +
+                    "  Date of Birth: " + privateuser.getDateOfBirth() + "\n" +
+                    "PrivateUser:\n" +
+                    "  Username: " + privateuser.getUsername() + "\n" +
+                    "  Location: " + privateuser.getLocation() + "\n" +
+                    "  Interests: " + privateuser.getInterestField() + "\n" +
+                    "  Work Type: " + privateuser.getWorkType() + "\n" +
+                    "  Skills: " + privateuser.getSkills() + "\n" +
+                    "  Education Level: " + privateuser.getEducationlevel() + "\n" +
+                    "  Personality: " + privateuser.getPersonality() + "\n" +
+                    "  Hobbies: " + privateuser.getHobbies() + "\n" +
+                    "  Support Needs: " + privateuser.getSupportneeds() + "\n" +
+                    "  Disability Type: " + privateuser.getDisabilitytype();
+
             result=true;
 
-        } else if (request.hasCompanyUser()) {
-            CompanyUserDTO companyuserdto = memberMapper.grpcToDto(request.getCompanyUser());
-            CoreUser coreuser=memberMapper.toEntity(companyuserdto);
-            CompanyUser companyuser=memberMapper.dtoToEntity(companyuserdto);
-
-            coreUserRepository.save(coreuser);
-            companyUserRepository.save(companyuser);
-
-            message= "Company User "+coreuser.getId()+" registered successfully";
-            result=true;
         } else {
             message = "register failed";
             result = false;

@@ -8,7 +8,7 @@ import lombok.experimental.SuperBuilder;
 import yesable.member.enums.user.Compclass;
 
 @Getter
-@Builder
+@SuperBuilder
 public class CompanyUserDTO extends CoreUserDTO{
     private String businessnumber;
     private String ceoname;

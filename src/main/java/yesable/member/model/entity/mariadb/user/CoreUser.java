@@ -18,6 +18,7 @@ import java.util.Collection;
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name="usertype")
 @Getter
+@Setter //mapstruct
 public class CoreUser implements UserDetails {
 
     @Id
