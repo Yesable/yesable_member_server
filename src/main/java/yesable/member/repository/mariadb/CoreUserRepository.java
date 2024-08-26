@@ -6,4 +6,6 @@ import yesable.member.model.entity.mariadb.user.CoreUser;
 
 @Repository
 public interface CoreUserRepository extends JpaRepository<CoreUser, Long> {
+
+    CoreUser findByID(String id);
 }

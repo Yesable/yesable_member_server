@@ -1,6 +1,8 @@
 package yesable.member.mapper;
 
 import com.example.grpc.*;
+
+
 import com.google.protobuf.ProtocolStringList;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -9,14 +11,17 @@ import org.mapstruct.ValueMapping;
 import org.mapstruct.factory.Mappers;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import yesable.member.dto.CompanyUserDTO;
+
 import yesable.member.dto.CoreUserDTO;
 import yesable.member.dto.PrivateUserDTO;
 import yesable.member.enums.user.*;
-import yesable.member.model.entity.mariadb.user.CompanyUser;
+import yesable.member.enums.user.Experiencetype;
+import yesable.member.enums.user.Gender;
+
 import yesable.member.model.entity.mariadb.user.CoreUser;
 import yesable.member.model.entity.mariadb.user.Experience;
 import yesable.member.model.entity.mariadb.user.PrivateUser;
+
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -82,19 +87,19 @@ public interface MemberMapper {
     }
 
     @ValueMapping(source="UNRECOGNIZED", target="UNKNOWN")
-    Educationlevel map(PrivateUserGRPC.Educationlevel educationlevel);
+    Educationlevel map(EducationlevelGRPC educationlevel);
 
     @ValueMapping(source="UNRECOGNIZED", target="UNKNOWN")
-    Disabilitytype map(PrivateUserGRPC.Disabilitytype disabilitytype);
+    Disabilitytype map(DisabilitytypeGRPC disabilitytype);
 
     @ValueMapping(source="UNRECOGNIZED", target="UNKNOWN")
-    Worktype map(PrivateUserGRPC.WorkType workType);
+    Worktype map(WorkTypeGRPC workType);
 
     @ValueMapping(source="UNRECOGNIZED", target="UNKNOWN")
-    Interestfield map(PrivateUserGRPC.InterestField interestField);
+    Interestfield map(InterestFieldGRPC interestField);
 
     @ValueMapping(source = "UNRECOGNIZED",target = "UNKNOWN")
-    Gender map(CoreUserGRPC.Gender gender);
+    Gender map(GenderGRPC gender);
 
 
 
