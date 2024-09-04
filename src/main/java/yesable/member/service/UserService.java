@@ -12,33 +12,29 @@ import yesable.member.dto.PrivateUserDTO;
 import yesable.member.mapper.MemberMapper;
 import yesable.member.model.entity.mariadb.user.CoreUser;
 import yesable.member.model.entity.mariadb.user.PrivateUser;
-import yesable.member.repository.mariadb.CompanyUserRepository;
 import yesable.member.repository.mariadb.CoreUserRepository;
 import yesable.member.repository.mariadb.PrivateUserRepository;
 
 import javax.crypto.SecretKey;
-import java.util.Date;
 import java.util.Optional;
 
 @GrpcService
 public class UserService extends UserServiceGrpc.UserServiceImplBase{
 
-    private final CoreUserRepository coreUserRepository;
+
     private final PrivateUserRepository privateUserRepository;
-    private final CompanyUserRepository companyUserRepository;
+
     private final MemberMapper memberMapper;
 
-    public UserService(CoreUserRepository coreUserRepository, PrivateUserRepository privateUserRepository, CompanyUserRepository companyUserRepository) {
-        this.coreUserRepository = coreUserRepository;
+    public UserService( PrivateUserRepository privateUserRepository) {
         this.privateUserRepository = privateUserRepository;
-        this.companyUserRepository = companyUserRepository;
         this.memberMapper = MemberMapper.INSTANCE;
     }
 
     @Override
     public void registerUser(RegisterUserRequest request, StreamObserver<RegisterUserResponse> responseobserver) {
         String message;
-        boolean result=false;
+        boolean result;
 
         if(request.hasPrivateUser()) {
             PrivateUserDTO privateuserdto=memberMapper.grpcToDto(request.getPrivateUser());
@@ -46,25 +42,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase{
 
             privateUserRepository.save(privateuser);
 
-            message = "Private User registered successfully with details:\n" +
-                    "CoreUser:\n" +
-                    "  ID: " + privateuser.getId() + "\n" +
-                    "  Email: " + privateuser.getEmail() + "\n" +
-                    "  Phone Number: " + privateuser.getPhoneNumber() + "\n" +
-                    "  Name: " + privateuser.getName() + "\n" +
-                    "  Gender: " + privateuser.getGender() + "\n" +
-                    "  Date of Birth: " + privateuser.getDateOfBirth() + "\n" +
-                    "PrivateUser:\n" +
-                    "  Username: " + privateuser.getUsername() + "\n" +
-                    "  Location: " + privateuser.getLocation() + "\n" +
-                    "  Interests: " + privateuser.getInterestField() + "\n" +
-                    "  Work Type: " + privateuser.getWorkType() + "\n" +
-                    "  Skills: " + privateuser.getSkills() + "\n" +
-                    "  Education Level: " + privateuser.getEducationlevel() + "\n" +
-                    "  Personality: " + privateuser.getPersonality() + "\n" +
-                    "  Hobbies: " + privateuser.getHobbies() + "\n" +
-                    "  Support Needs: " + privateuser.getSupportneeds() + "\n" +
-                    "  Disability Type: " + privateuser.getDisabilitytype();
+            message = "Private User registered successful";
 
             result=true;
 
@@ -84,66 +62,8 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase{
     }
 
 
-    @Override
-    public void loginUser(LoginUserRequest request, StreamObserver<LoginUserResponse> responseobserver) {
-        boolean success = authenticateUser(request.getId(), request.getPassword());
-        String token = "";
-
-        if (success) {
-            token = generateTokenForUser(request.getId()); // 토큰 생성 로직
-        }
-
-        LoginUserResponse response = LoginUserResponse.newBuilder()
-                .setSuccess(success)
-                .setToken(token)
-                .build();
-
-        responseobserver.onNext(response);
-        responseobserver.onCompleted();
 
 
-    }
-
-    private String generateTokenForUser(String id) {
-        SecretKey key= Keys.secretKey();
-        String token = Pasetos.V1.LOCAL.builder()
-                .setSubject("yesable")
-                .setSharedSecret(key)
-                .compact();
-
-        return token;
-    }
-
-    private boolean authenticateUser(String id, String password) {
-        Optional<CoreUser> userOpt = Optional.ofNullable(coreUserRepository.findByID(id));
-
-        if (userOpt.isPresent()) {
-
-            return true;
-        }
-
-        return false; // 사용자명에 해당하는 사용자가 없을 때
-    }
-
-
-    @Override
-    public void logoutUser(LogoutUserRequest request, StreamObserver<LogoutUserResponse> responseObserver) {
-        // 로그아웃 로직 구현
-        boolean success = invalidateToken(request.getToken()); // 토큰 무효화 로직
-
-        LogoutUserResponse response = LogoutUserResponse.newBuilder()
-                .setSuccess(success)
-                .setMessage(success ? "Logged out successfully" : "Logout failed")
-                .build();
-
-        responseObserver.onNext(response);
-        responseObserver.onCompleted();
-    }
-
-    private boolean invalidateToken(String token) {
-        return true; //임시값
-
-    }
 
     @Override
     public void onBoardingUser(OnboardingUserRequest request, StreamObserver<OnboardingUserResponse> response) {

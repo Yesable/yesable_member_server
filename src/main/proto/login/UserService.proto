@@ -8,9 +8,6 @@ package user;
 
 service UserService {
     rpc RegisterUser(RegisterUserRequest) returns (RegisterUserResponse);
-    rpc LoginUser(LoginUserRequest) returns (LoginUserResponse);
-    rpc LogoutUser(LogoutUserRequest) returns (LogoutUserResponse);
-
     rpc OnBoardingUser(OnboardingUserRequest) returns (OnboardingUserResponse);
    // rpc ProfileUpdate(ProfileUpdateUserRequest) returns(ProfileUpdateUserResponse);
 
@@ -96,10 +93,9 @@ enum ExperiencetypeGRPC {
 
 //--------------------------------------------  enum ^
 message RegisterUserRequest {
-  oneof user { //user는 기업또는 개인을 나타내는 필드
-    PrivateUserGRPC private_user = 1;
-    CompanyUserGRPC company_user = 2;
-  }
+
+  PrivateUserGRPC private_user = 1;
+
 }
 
 message RegisterUserResponse {
@@ -107,27 +103,6 @@ message RegisterUserResponse {
   bool success = 2;
 }
 
-message LoginUserRequest {
-  string id=1; //엔티티의 id가 아닌 qwer같은 아이디
-  string password=2;
-}
-
-message LoginUserResponse {
-  string message=1;
-  bool success=2;
-  string token=3;
-}
-
-message LogoutUserRequest {
-  string id=1;
-  string password=2;
-  string token=3;
-}
-
-message LogoutUserResponse {
-  string message=1;
-  bool success=2;
-}
 
 message OnboardingUserRequest {
   /*
@@ -207,19 +182,7 @@ message PrivateUserGRPC {
   repeated ExperienceGRPC experiences=12;
 }
 
-message CompanyUserGRPC {
-  CoreUserGRPC core_user = 1;
-  string businessnumber=2;
-  string ceoname=3;
-  string businessarea=4;
 
-
-  string compclass=5;
-  string hr_name=6;
-  string hr_phone=7;
-  string hr_email=8;
-
-}
 
 message ExperienceGRPC {
   int64 id=1;
