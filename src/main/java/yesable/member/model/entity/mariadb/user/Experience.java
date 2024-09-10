@@ -2,16 +2,15 @@ package yesable.member.model.entity.mariadb.user;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
 import yesable.member.enums.user.Experiencetype;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Getter
+@Setter
 @Builder //Mapping에서 빌더패턴을 위해 추가
 @AllArgsConstructor
 public class Experience {
@@ -38,5 +37,7 @@ public class Experience {
     private String jobDescription; //주요 업무 내용
 
 
+    public Experience() {
 
+    }
 }

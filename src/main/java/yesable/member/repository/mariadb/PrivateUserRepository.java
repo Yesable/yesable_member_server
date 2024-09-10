@@ -6,4 +6,6 @@ import yesable.member.model.entity.mariadb.user.PrivateUser;
 
 @Repository
 public interface PrivateUserRepository extends JpaRepository<PrivateUser, Long> {
+
+    PrivateUser findPrivateUserByUsername(String userName);
 }

@@ -43,7 +43,7 @@ public class PrivateUser extends CoreUser {
     @Enumerated(EnumType.STRING)
     private Disabilitytype disabilitytype;
 
-    @OneToMany(mappedBy = "privateUser", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "privateUser", orphanRemoval = true) //experience id문제로 cascade 생략
     private Set<Experience> experiences;
 
 

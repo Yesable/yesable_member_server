@@ -14,6 +14,7 @@ import java.util.Collection;
 @Getter
 @SuperBuilder
 public class CoreUserDTO {
+    private Long userSeq;
     private String id;
     private String password;
     private String email;
