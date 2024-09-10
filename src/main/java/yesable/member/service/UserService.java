@@ -17,6 +17,7 @@ import yesable.member.model.entity.mariadb.user.PrivateUser;
 import yesable.member.repository.mariadb.CompanyUserRepository;
 import yesable.member.repository.mariadb.CoreUserRepository;
 import yesable.member.repository.mariadb.ExperienceRepository;
+
 import yesable.member.repository.mariadb.PrivateUserRepository;
 
 import javax.crypto.SecretKey;
@@ -40,16 +41,20 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase{
     }
 
     @Transactional
+
     @Override
     public void registerUser(RegisterUserRequest request, StreamObserver<RegisterUserResponse> responseobserver) {
         String message;
         boolean result;
 
+
         if(request.hasPrivateuser()) {
             PrivateUserDTO privateuserdto=memberMapper.grpcToDto(request.getPrivateuser());
+
             PrivateUser privateuser=memberMapper.dtoToEntity(privateuserdto);
 
             privateUserRepository.save(privateuser);
+
 
             for(Experience ex:privateuser.getExperiences()) {
                 ex.setPrivateUser(privateuser);
@@ -77,6 +82,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase{
             result=true;
 
         }else {
+
             message = "register failed";
             result = false;
         }
@@ -103,6 +109,8 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase{
 
 
     }
+
+
 
 
 

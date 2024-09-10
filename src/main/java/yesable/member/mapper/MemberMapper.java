@@ -6,25 +6,20 @@ import com.example.grpc.*;
 import com.google.protobuf.ProtocolStringList;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Named;
 import org.mapstruct.ValueMapping;
 import org.mapstruct.factory.Mappers;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
 import yesable.member.dto.CompanyUserDTO;
 import yesable.member.dto.CoreUserDTO;
 import yesable.member.dto.PrivateUserDTO;
 import yesable.member.enums.user.*;
 import yesable.member.enums.user.Experiencetype;
 import yesable.member.enums.user.Gender;
-
 import yesable.member.model.entity.mariadb.user.CompanyUser;
 import yesable.member.model.entity.mariadb.user.CoreUser;
 import yesable.member.model.entity.mariadb.user.Experience;
 import yesable.member.model.entity.mariadb.user.PrivateUser;
-
-
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Date;
@@ -40,6 +35,7 @@ public interface MemberMapper {
 
     @Mapping(target = "authorities", source = "authoritiesList")
     CoreUserDTO toDTO(CoreUserGRPC entity);
+
 
 
     CoreUser toEntity(CoreUserDTO dto);
@@ -62,6 +58,7 @@ public interface MemberMapper {
 
     PrivateUser dtoToEntity(PrivateUserDTO dto);
 
+
     @Mapping(source="coreUser.id",target="id")
     @Mapping(source="coreUser.password",target="password")
     @Mapping(source="coreUser.email",target="email")
@@ -78,6 +75,7 @@ public interface MemberMapper {
     CompanyUser dtoToEntity(CompanyUserDTO dto);
 
 
+
     //---------------------------------------이하 추가 매핑 메소드-------------------------- f
 
 
@@ -88,6 +86,7 @@ public interface MemberMapper {
                 .collect(Collectors.toCollection(ArrayList::new));
 
     }
+
 
 
 
@@ -161,6 +160,7 @@ public interface MemberMapper {
     }
 
 
+
     @ValueMapping(source="UNRECOGNIZED", target="UNKNOWN")
     Educationlevel map(EducationlevelGRPC educationlevel);
 
@@ -176,8 +176,10 @@ public interface MemberMapper {
     @ValueMapping(source = "UNRECOGNIZED",target = "UNKNOWN")
     Gender map(GenderGRPC gender);
 
+
     @ValueMapping(source = "UNRECOGNIZED",target = "UNKNOWN")
     Compclass map(CompclassGRPC gender);
+
 
 
 
