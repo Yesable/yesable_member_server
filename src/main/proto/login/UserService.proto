@@ -94,14 +94,12 @@ enum ExperiencetypeGRPC {
 //--------------------------------------------  enum ^
 message RegisterUserRequest {
 
-<<<<<<< HEAD
+
   oneof whatuser{
     PrivateUserGRPC privateuser=1;
     CompanyUserGRPC companyuser=2;
   }
-=======
-  PrivateUserGRPC private_user = 1;
->>>>>>> temp
+
 
 }
 
@@ -161,11 +159,9 @@ message CoreUserGRPC {
 
 
   GenderGRPC gender=6;
-<<<<<<< HEAD
+
   LocalDateGRPC dateOfBirth=7;
-=======
-  string dateOfBirth=7;
->>>>>>> temp
+
   repeated string authorities=8;
 }
 
@@ -193,7 +189,7 @@ message PrivateUserGRPC {
   repeated ExperienceGRPC experiences=12;
 }
 
-<<<<<<< HEAD
+
 message CompanyUserGRPC {
   CoreUserGRPC core_user=1;
 
@@ -209,14 +205,6 @@ message CompanyUserGRPC {
 
 message ExperienceGRPC {
   int64 userSeq=1; //어떤 USer의 경력인지
-=======
-
-
-message ExperienceGRPC {
-  int64 id=1;
-  PrivateUserGRPC privateuser=2;
-
->>>>>>> temp
 
 
   ExperiencetypeGRPC experiencetype=3;
