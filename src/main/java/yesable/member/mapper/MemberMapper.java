@@ -16,7 +16,6 @@ import yesable.member.dto.PrivateUserDTO;
 import yesable.member.enums.user.*;
 import yesable.member.enums.user.Experiencetype;
 import yesable.member.enums.user.Gender;
-import yesable.member.model.entity.mariadb.user.CompanyUser;
 import yesable.member.model.entity.mariadb.user.CoreUser;
 import yesable.member.model.entity.mariadb.user.Experience;
 import yesable.member.model.entity.mariadb.user.PrivateUser;

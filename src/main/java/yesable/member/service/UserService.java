@@ -10,18 +10,11 @@ import net.devh.boot.grpc.server.service.GrpcService;
 import yesable.member.dto.CompanyUserDTO;
 import yesable.member.dto.PrivateUserDTO;
 import yesable.member.mapper.MemberMapper;
-import yesable.member.model.entity.mariadb.user.CompanyUser;
-import yesable.member.model.entity.mariadb.user.CoreUser;
 import yesable.member.model.entity.mariadb.user.Experience;
 import yesable.member.model.entity.mariadb.user.PrivateUser;
-import yesable.member.repository.mariadb.CompanyUserRepository;
-import yesable.member.repository.mariadb.CoreUserRepository;
 import yesable.member.repository.mariadb.ExperienceRepository;
 
 import yesable.member.repository.mariadb.PrivateUserRepository;
-
-import javax.crypto.SecretKey;
-import java.util.Optional;
 
 @GrpcService
 public class UserService extends UserServiceGrpc.UserServiceImplBase{
@@ -41,7 +34,6 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase{
     }
 
     @Transactional
-
     @Override
     public void registerUser(RegisterUserRequest request, StreamObserver<RegisterUserResponse> responseobserver) {
         String message;
@@ -104,8 +96,12 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase{
 
 
 
+    @Transactional
     @Override
     public void onBoardingUser(OnboardingUserRequest request, StreamObserver<OnboardingUserResponse> response) {
+
+        String message;
+        boolean result;
 
 
     }

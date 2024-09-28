@@ -8,8 +8,7 @@ package user;
 
 service UserService {
     rpc RegisterUser(RegisterUserRequest) returns (RegisterUserResponse);
-    rpc OnBoardingUser(OnboardingUserRequest) returns (OnboardingUserResponse);
-   // rpc ProfileUpdate(ProfileUpdateUserRequest) returns(ProfileUpdateUserResponse);
+
 
 
 
@@ -43,7 +42,6 @@ enum WorkTypeGRPC {
   FULLTIME=3;
 
 }
-
 enum EducationlevelGRPC {
   CHOJOL=0;
   JUNGJOL=1;
@@ -53,7 +51,6 @@ enum EducationlevelGRPC {
   GRADUATESCHOOL=5;
 
 }
-
 enum DisabilitytypeGRPC {
 
   PHYSICAL_DISABILITY_MOBILITY_IMPAIRED = 0;
@@ -78,27 +75,24 @@ enum DisabilitytypeGRPC {
 
 
 }
-
 enum CompclassGRPC {
   SMALL=0;
   MIDDLE=1;
   BIG=2;
 }
-
 enum ExperiencetypeGRPC {
   Experiencetype_NULL=0;
   NOEXPERIENCE=1;
   YESEXPERIENCE=2;
 }
-
 //--------------------------------------------  enum ^
 message RegisterUserRequest {
 
 
-  oneof whatuser{
-    PrivateUserGRPC privateuser=1;
-    CompanyUserGRPC companyuser=2;
-  }
+
+  PrivateUserGRPC privateuser=1;
+
+
 
 
 }
@@ -109,44 +103,6 @@ message RegisterUserResponse {
 }
 
 
-message OnboardingUserRequest {
-  /*
-  1. 희망 근무지 서울 부산 대구 ..
-  2. 대중교통 이용 가능 여부 TF
-  3. 관심분야, InterestField
-  4. 경력사항, 회사명 직무 근무기간 주요 업무 내용
-  5. 기술 및 자격증
-  6. 학력사항
-  7. 지원 필요사항 (선택)
-  8. 기타 및 자기소개
-   */
-
-  string workplace=1; //희망 근무지
-  bool publictransportationTF=2;
-  InterestFieldGRPC interestfield=3;
-  ExperiencetypeGRPC experiencetype=4; //신입인지 경력인지만 표시, 신입이라면 experiences가 null 또는 0
-  repeated ExperienceGRPC experiences=5; //경력이라면 그와 관련된 경력사항들을 의미함
-  repeated string skills=6; //특정 기술 및 자격증이 있다면 나열
-  EducationlevelGRPC educationlevel=7; //학력사항
-  string supportneeds=8;
-  string selfintroduce=9; //자기소개
-
-
-
-}
-
-message OnboardingUserResponse {
-  string message=1;
-  bool success=2;
-}
-/*
-message ProfileUpdateUserRequest {
-
-}
-
-message ProfileUpdateUserRequest {
-
-}*/
 
 //--------------------------------
 
@@ -172,8 +128,6 @@ message PrivateUserGRPC {
 
 
   repeated InterestFieldGRPC interestField=4;
-
-
   repeated WorkTypeGRPC workType=5;
 
 
@@ -190,17 +144,6 @@ message PrivateUserGRPC {
 }
 
 
-message CompanyUserGRPC {
-  CoreUserGRPC core_user=1;
-
-  string businessnumber=2; //사업자 번호
-  string ceoname=3;
-  string businessarea=4;
-  CompclassGRPC compclass=5;
-  string hr_name=6;
-  string hr_phone=7;
-  string hr_email=8;
-}
 
 
 message ExperienceGRPC {
