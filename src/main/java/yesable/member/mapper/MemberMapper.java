@@ -3,14 +3,15 @@ package yesable.member.mapper;
 import com.example.grpc.*;
 
 
+import com.google.protobuf.LazyStringArrayList;
 import com.google.protobuf.ProtocolStringList;
+import org.mapstruct.CollectionMappingStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ValueMapping;
 import org.mapstruct.factory.Mappers;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import yesable.member.dto.CompanyUserDTO;
 import yesable.member.dto.CoreUserDTO;
 import yesable.member.dto.PrivateUserDTO;
 import yesable.member.enums.user.*;
@@ -22,17 +23,18 @@ import yesable.member.model.entity.mariadb.user.PrivateUser;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.ArrayList;
 
 
-@Mapper
+@Mapper(collectionMappingStrategy=CollectionMappingStrategy.TARGET_IMMUTABLE)
 public interface MemberMapper {
     //toDTO: gRPC의 각 엔티티를 JPA 스타일의 엔티티로 전환하기 위해 일단 DTO로 변경
     //toEntity : DTO형식의 엔티티를 JPA스타일의 엔티티로 전환
     MemberMapper INSTANCE = Mappers.getMapper(MemberMapper.class);
 
-    @Mapping(target = "authorities", source = "authoritiesList")
+
     CoreUserDTO toDTO(CoreUserGRPC entity);
 
 
@@ -41,10 +43,7 @@ public interface MemberMapper {
 
 
 
-    @Mapping(source = "interestFieldList", target = "interestField")
-    @Mapping(source = "workTypeList", target = "workType")
-    @Mapping(source = "skillsList", target = "skills")
-    @Mapping(source = "experiencesList",target="experiences") //이하 super의 coreuser관련
+
     @Mapping(source="coreUser.id",target="id")
     @Mapping(source="coreUser.password",target="password")
     @Mapping(source="coreUser.email",target="email")
@@ -52,26 +51,30 @@ public interface MemberMapper {
     @Mapping(source="coreUser.name",target="name")
     @Mapping(source="coreUser.gender",target="gender")
     @Mapping(source="coreUser.dateOfBirth",target="dateOfBirth")
-    @Mapping(source="coreUser.authoritiesList",target="authorities")
+    @Mapping(source="coreUser.authorities",target="authorities")
     PrivateUserDTO grpcToDto(PrivateUserGRPC grpc);
+
+
+    @Mapping(source = "id", target = "coreUser.id")
+    @Mapping(source = "password", target = "coreUser.password")
+    @Mapping(source = "email", target = "coreUser.email")
+    @Mapping(source = "phoneNumber", target = "coreUser.phoneNumber")
+    @Mapping(source = "name", target = "coreUser.name")
+    @Mapping(source = "gender", target = "coreUser.gender")
+    @Mapping(source = "dateOfBirth", target = "coreUser.dateOfBirth")
+    PrivateUserGRPC dtoToGrpc(PrivateUserDTO dto);
 
     PrivateUser dtoToEntity(PrivateUserDTO dto);
 
 
-    @Mapping(source="coreUser.id",target="id")
-    @Mapping(source="coreUser.password",target="password")
-    @Mapping(source="coreUser.email",target="email")
-    @Mapping(source="coreUser.phoneNumber",target="phoneNumber")
-    @Mapping(source="coreUser.name",target="name")
-    @Mapping(source="coreUser.gender",target="gender")
-    @Mapping(source="coreUser.dateOfBirth",target="dateOfBirth")
-    @Mapping(source="coreUser.authoritiesList",target="authorities")
-    @Mapping(source="hrEmail",target="hr_email")
-    @Mapping(source="hrPhone",target="hr_phone")
-    @Mapping(source="hrName",target="hr_name")
-    CompanyUserDTO grpcToDto(CompanyUserGRPC grpc);
 
-    CompanyUser dtoToEntity(CompanyUserDTO dto);
+
+
+
+    PrivateUserDTO entitytoDto(PrivateUser entity);
+
+
+
 
 
 
@@ -87,11 +90,14 @@ public interface MemberMapper {
     }
 
 
+    default ProtocolStringList map(Set<String> set) {
+        ProtocolStringList result=new LazyStringArrayList();
 
 
-
-
-        default Experience map(ExperienceGRPC value) {
+        result.addAll(set);
+        return result;
+    }
+    default Experience map(ExperienceGRPC value) {
             if (value == null) {
                 return null;
             }
@@ -105,23 +111,12 @@ public interface MemberMapper {
                     .experienceSeq(value.getUserSeq())
                     .companyname(value.getCompanyname())
                     .experiencetype(Experiencetype.valueOf(value.getExperiencetype().name()))
-                    .startDate(resultStartDate)
-                    .endDate(resultEndDate)
+                    .startdate(resultStartDate)
+                    .enddate(resultEndDate)
                     .department(value.getDepartment())
-                    .jobDescription(value.getJobdescription())
+                    .jobdescription(value.getJobdescription())
                     .build();
 
-            // startdate 비교 및 출력
-            System.out.println("Startdate 비교:");
-            System.out.println("Value의 연도: " + value.getStartdate().getYear() + ", Result의 연도: " + resultStartDate.getYear());
-            System.out.println("Value의 월: " + value.getStartdate().getMonth() + ", Result의 월: " + resultStartDate.getMonthValue());
-            System.out.println("Value의 일: " + value.getStartdate().getDay() + ", Result의 일: " + resultStartDate.getDayOfMonth());
-
-            // enddate 비교 및 출력
-            System.out.println("Enddate 비교:");
-            System.out.println("Value의 연도: " + value.getEnddate().getYear() + ", Result의 연도: " + resultEndDate.getYear());
-            System.out.println("Value의 월: " + value.getEnddate().getMonth() + ", Result의 월: " + resultEndDate.getMonthValue());
-            System.out.println("Value의 일: " + value.getEnddate().getDay() + ", Result의 일: " + resultEndDate.getDayOfMonth());
 
 
             return result;
@@ -130,7 +125,7 @@ public interface MemberMapper {
 
 
 
-    default Date map(LocalDateGRPC value) {
+    default LocalDate map(LocalDateGRPC value) {
         if (value == null) {
             return null;
         }
@@ -151,7 +146,7 @@ public interface MemberMapper {
             throw new IllegalArgumentException("Invalid day value: " + day);
         }
 
-        Date result = new Date();
+        LocalDate result = LocalDate.of(year, month, day);
 
         System.out.println("Mapped LocalDate: " + result);
 
@@ -176,8 +171,44 @@ public interface MemberMapper {
     Gender map(GenderGRPC gender);
 
 
-    @ValueMapping(source = "UNRECOGNIZED",target = "UNKNOWN")
-    Compclass map(CompclassGRPC gender);
+
+
+
+    //---
+
+    default LocalDateGRPC map(LocalDate dateOfBirth) {
+
+        LocalDateGRPC result= LocalDateGRPC.newBuilder()
+                .setYear(dateOfBirth.getYear())
+                .setMonth(dateOfBirth.getMonthValue())
+                .setDay(dateOfBirth.getDayOfMonth())
+                .build();
+
+        return result;
+    }
+
+
+
+
+
+    @ValueMapping(source="UNKNOWN",target="UNRECOGNIZED")
+    GenderGRPC map(Gender gender);
+
+    @ValueMapping(source = "UNKNOWN", target = "UNRECOGNIZED") // 적절한 값으로 매핑
+    InterestFieldGRPC map(Interestfield interestField);
+
+    @ValueMapping(source = "UNKNOWN", target = "UNRECOGNIZED") // 적절한 값으로 매핑
+    WorkTypeGRPC map(Worktype workType);
+
+    @ValueMapping(source="UNKNOWN", target="UNRECOGNIZED")
+    EducationlevelGRPC map(Educationlevel educationlevel);
+
+    @ValueMapping(source="UNKNOWN", target="UNRECOGNIZED")
+    DisabilitytypeGRPC map(Disabilitytype disabilitytype);
+
+
+    ExperienceGRPC map(Experience experience);
+
 
 
 

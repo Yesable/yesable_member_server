@@ -8,6 +8,7 @@ package user;
 
 service UserService {
     rpc RegisterUser(RegisterUserRequest) returns (RegisterUserResponse);
+     rpc GetPrivateUser(GetPrivateUserRequest) returns (GetPrivateUserResponse);  // PrivateUser 반환
 
 
 
@@ -15,86 +16,81 @@ service UserService {
 }
 //------------------------------------------------- enum v
 enum InterestFieldGRPC {
-  FOOD=0;
-  RETAIL=1;
-  CULTURE=2;
-  SERVICE=3;
-  AFFAIR=4;
-  SALES=5;
-  MANUFACTURE=6;
-  IT=7;
-  DESIGN=8;
-  DRIVE=9;
-  EDUCATION=10;
-  HOSPITAL=11;
-  MEDIA=12;
+  INTEREST_FIELD_G_R_P_C_UNSPECIFIED = 0;
+  FOOD = 1;
+  RETAIL = 2;
+  CULTURE = 3;
+  SERVICE = 4;
+  AFFAIR = 5;
+  SALES = 6;
+  MANUFACTURE = 7;
+  IT = 8;
+  DESIGN = 9;
+  DRIVE = 10;
+  EDUCATION = 11;
+  HOSPITAL = 12;
+  MEDIA = 13;
 }
 
-enum GenderGRPC{
-  MALE=0;
-  FEMALE=1;
-  ETC=2;
+enum GenderGRPC {
+  GENDER_G_R_P_C_UNSPECIFIED = 0;
+  MALE = 1;
+  FEMALE = 2;
+  ETC = 3;
 }
+
 enum WorkTypeGRPC {
-  PARTTIMEJOB=0;
-  INTERN=1;
-  CONTRACT=2;
-  FULLTIME=3;
-
+  WORK_TYPE_G_R_P_C_UNSPECIFIED = 0;
+  PARTTIMEJOB = 1;
+  INTERN = 2;
+  CONTRACT = 3;
+  FULLTIME = 4;
 }
+
 enum EducationlevelGRPC {
-  CHOJOL=0;
-  JUNGJOL=1;
-  GOJOL=2;
-  UNIV23=3;
-  UNIV4=4;
-  GRADUATESCHOOL=5;
-
+  EDUCATIONLEVEL_G_R_P_C_UNSPECIFIED = 0;
+  CHOJOL = 1;
+  JUNGJOL = 2;
+  GOJOL = 3;
+  UNIV23 = 4;
+  UNIV4 = 5;
+  GRADUATESCHOOL = 6;
 }
+
 enum DisabilitytypeGRPC {
-
-  PHYSICAL_DISABILITY_MOBILITY_IMPAIRED = 0;
-  PHYSICAL_DISABILITY_BRAIN_LESSON = 1;
-  PHYSICAL_DISABILITY_VISUAL_IMPAIRED = 2;
-  PHYSICAL_DISABILITY_HEARING_IMPAIRED = 3;
-  PHYSICAL_DISABILITY_SPEECH_IMPAIRED = 4;
-  PHYSICAL_DISABILITY_FACIAL_IMPAIRED = 5;
-
-  // Physical Disabilities - Internal
-  PHYSICAL_DISABILITY_KIDNEY_IMPAIRED = 6;
-  PHYSICAL_DISABILITY_HEART_IMPAIRED = 7;
-  PHYSICAL_DISABILITY_RESPIRATORY_IMPAIRED = 8;
-  PHYSICAL_DISABILITY_LIVER_IMPAIRED = 9;
-  PHYSICAL_DISABILITY_STOMA_IMPAIRED = 10;
-  PHYSICAL_DISABILITY_EPILEPSY_IMPAIRED = 11;
-
-  // Mental Disabilities
-  MENTAL_DISABILITY_INTELLECTUAL_IMPAIRED = 12;
-  MENTAL_DISABILITY_MENTAL_IMPAIRED = 13;
-  MENTAL_DISABILITY_AUTISM_IMPAIRED = 14;
-
-
+  DISABILITYTYPE_G_R_P_C_UNSPECIFIED = 0;
+  PHYSICAL_DISABILITY_MOBILITY_IMPAIRED = 1;
+  PHYSICAL_DISABILITY_BRAIN_LESSON = 2;
+  PHYSICAL_DISABILITY_VISUAL_IMPAIRED = 3;
+  PHYSICAL_DISABILITY_HEARING_IMPAIRED = 4;
+  PHYSICAL_DISABILITY_SPEECH_IMPAIRED = 5;
+  PHYSICAL_DISABILITY_FACIAL_IMPAIRED = 6;
+  PHYSICAL_DISABILITY_KIDNEY_IMPAIRED = 7;
+  PHYSICAL_DISABILITY_HEART_IMPAIRED = 8;
+  PHYSICAL_DISABILITY_RESPIRATORY_IMPAIRED = 9;
+  PHYSICAL_DISABILITY_LIVER_IMPAIRED = 10;
+  PHYSICAL_DISABILITY_STOMA_IMPAIRED = 11;
+  PHYSICAL_DISABILITY_EPILEPSY_IMPAIRED = 12;
+  MENTAL_DISABILITY_INTELLECTUAL_IMPAIRED = 13;
+  MENTAL_DISABILITY_MENTAL_IMPAIRED = 14;
+  MENTAL_DISABILITY_AUTISM_IMPAIRED = 15;
 }
+
 enum CompclassGRPC {
-  SMALL=0;
-  MIDDLE=1;
-  BIG=2;
+  COMPCLASS_G_R_P_C_UNSPECIFIED = 0;
+  SMALL = 1;
+  MIDDLE = 2;
+  BIG = 3;
 }
+
 enum ExperiencetypeGRPC {
-  Experiencetype_NULL=0;
-  NOEXPERIENCE=1;
-  YESEXPERIENCE=2;
+  EXPERIENCETYPE_G_R_P_C_UNSPECIFIED = 0;
+  NOEXPERIENCE = 1;
+  YESEXPERIENCE = 2;
 }
 //--------------------------------------------  enum ^
 message RegisterUserRequest {
-
-
-
   PrivateUserGRPC privateuser=1;
-
-
-
-
 }
 
 message RegisterUserResponse {
@@ -102,6 +98,14 @@ message RegisterUserResponse {
   bool success = 2;
 }
 
+
+message GetPrivateUserRequest {
+  string userId = 1;  // PrivateUser의 로그인 ID
+}
+
+message GetPrivateUserResponse {
+  PrivateUserGRPC privateUser = 1;
+}
 
 
 //--------------------------------

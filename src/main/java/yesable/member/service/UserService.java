@@ -4,10 +4,11 @@ package yesable.member.service;
 
 
 import com.example.grpc.*;
+import io.grpc.Status;
+import io.grpc.StatusRuntimeException;
 import io.grpc.stub.StreamObserver;
 import jakarta.transaction.Transactional;
 import net.devh.boot.grpc.server.service.GrpcService;
-import yesable.member.dto.CompanyUserDTO;
 import yesable.member.dto.PrivateUserDTO;
 import yesable.member.mapper.MemberMapper;
 import yesable.member.model.entity.mariadb.user.Experience;
@@ -21,14 +22,12 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase{
 
 
     private final PrivateUserRepository privateUserRepository;
-    private final CompanyUserRepository companyUserRepository;
     private final ExperienceRepository experienceRepository;
 
     private final MemberMapper memberMapper;
 
-    public UserService( PrivateUserRepository privateUserRepository, CompanyUserRepository companyUserRepository, ExperienceRepository experienceRepository) {
+    public UserService( PrivateUserRepository privateUserRepository,  ExperienceRepository experienceRepository) {
         this.privateUserRepository = privateUserRepository;
-        this.companyUserRepository=companyUserRepository;
         this.experienceRepository=experienceRepository;
         this.memberMapper = MemberMapper.INSTANCE;
     }
@@ -63,16 +62,6 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase{
 
             result=true;
 
-        } else if(request.hasCompanyuser()){
-            CompanyUserDTO companyuserdto=memberMapper.grpcToDto(request.getCompanyuser());
-            CompanyUser companyuser=memberMapper.dtoToEntity(companyuserdto);
-
-            companyUserRepository.save(companyuser);
-
-            message = "companyUser registered successful";
-
-            result=true;
-
         }else {
 
             message = "register failed";
@@ -98,17 +87,25 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase{
 
     @Transactional
     @Override
-    public void onBoardingUser(OnboardingUserRequest request, StreamObserver<OnboardingUserResponse> response) {
+    public void getPrivateUser(GetPrivateUserRequest request, StreamObserver<GetPrivateUserResponse> responseobserver) {
+        PrivateUser privateUserentity=privateUserRepository.findPrivateUserById(request.getUserId());
+        System.out.println("sadfsadf : " +privateUserentity.getName()+"\n\n\n");
 
-        String message;
-        boolean result;
+        if(privateUserentity==null) {
+            responseobserver.onError(new StatusRuntimeException(Status.NOT_FOUND.withDescription("PrivateUser Not Found")));
+        }
+        PrivateUserDTO privateUserDTO=memberMapper.entitytoDto(privateUserentity);
+        System.out.println("ㅁㄴㅇ: " +privateUserDTO.getName()+"asdf    " +privateUserDTO.getInterestField()+"\n\n\n");
 
+        PrivateUserGRPC privateUserGRPC=memberMapper.dtoToGrpc(privateUserDTO);
+        GetPrivateUserResponse response = GetPrivateUserResponse.newBuilder()
+                .setPrivateUser(privateUserGRPC)
+                .build();
 
+        // 응답 전송
+        responseobserver.onNext(response);
+        responseobserver.onCompleted();
     }
 
 
-
-
-
-    //id, passwd가 오면 이 유저가 있는지 없는지, 있으면 id 없으면 null이나 error나
 }

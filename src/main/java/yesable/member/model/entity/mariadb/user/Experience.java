@@ -28,13 +28,13 @@ public class Experience {
 
     private String companyname;
 
-    private LocalDate startDate;
+    private LocalDate startdate;
 
-    private LocalDate endDate;
+    private LocalDate enddate;
 
     private String department; //직무 종류
 
-    private String jobDescription; //주요 업무 내용
+    private String jobdescription; //주요 업무 내용
 
 
     public Experience() {

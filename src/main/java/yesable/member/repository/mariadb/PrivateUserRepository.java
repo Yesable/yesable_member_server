@@ -9,5 +9,5 @@ public interface PrivateUserRepository extends JpaRepository<PrivateUser, Long> 
 
 
     PrivateUser findPrivateUserByUsername(String userName);
-
+    PrivateUser findPrivateUserById(String userId);
 }
