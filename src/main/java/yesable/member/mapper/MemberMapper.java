@@ -129,7 +129,7 @@ public interface MemberMapper {
         if (value == null) {
             return null;
         }
-        System.out.println("Mapping LocalDateGRPC: " + value);
+
 
         int year = value.getYear();
         int month = value.getMonth();
@@ -148,7 +148,7 @@ public interface MemberMapper {
 
         LocalDate result = LocalDate.of(year, month, day);
 
-        System.out.println("Mapped LocalDate: " + result);
+
 
         return result;
     }

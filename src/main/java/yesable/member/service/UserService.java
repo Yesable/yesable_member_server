@@ -55,9 +55,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase{
             }
 
 
-
             message = "Private User registered successful";
-
 
 
             result=true;
@@ -89,13 +87,12 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase{
     @Override
     public void getPrivateUser(GetPrivateUserRequest request, StreamObserver<GetPrivateUserResponse> responseobserver) {
         PrivateUser privateUserentity=privateUserRepository.findPrivateUserById(request.getUserId());
-        System.out.println("sadfsadf : " +privateUserentity.getName()+"\n\n\n");
 
         if(privateUserentity==null) {
             responseobserver.onError(new StatusRuntimeException(Status.NOT_FOUND.withDescription("PrivateUser Not Found")));
         }
         PrivateUserDTO privateUserDTO=memberMapper.entitytoDto(privateUserentity);
-        System.out.println("ㅁㄴㅇ: " +privateUserDTO.getName()+"asdf    " +privateUserDTO.getInterestField()+"\n\n\n");
+
 
         PrivateUserGRPC privateUserGRPC=memberMapper.dtoToGrpc(privateUserDTO);
         GetPrivateUserResponse response = GetPrivateUserResponse.newBuilder()
