@@ -8,7 +8,7 @@ package user;
 
 service UserService {
     rpc RegisterUser(RegisterUserRequest) returns (RegisterUserResponse);
-     rpc GetPrivateUser(GetPrivateUserRequest) returns (GetPrivateUserResponse);  // PrivateUser 반환
+    rpc GetPrivateUserId(GetPrivateUserIdRequest) returns(GetPrivateUserIdResponse);
 
 
 
@@ -99,14 +99,16 @@ message RegisterUserResponse {
 }
 
 
-message GetPrivateUserRequest {
-  string userId = 1;  // PrivateUser의 로그인 ID
+
+
+message GetPrivateUserIdRequest {
+  string encuserId=1; //암호화된 사용자 로그인 ID
+  string encuserpassword=2; //암호화된 사용자 로그인 비밀번호
 }
 
-message GetPrivateUserResponse {
-  PrivateUserGRPC privateUser = 1;
+message GetPrivateUserIdResponse {
+  double userseq=1; //해당 유저의 db에 저장되는 id
 }
-
 
 //--------------------------------
 

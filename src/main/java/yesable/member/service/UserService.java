@@ -14,21 +14,22 @@ import yesable.member.mapper.MemberMapper;
 import yesable.member.model.entity.mariadb.user.Experience;
 import yesable.member.model.entity.mariadb.user.PrivateUser;
 import yesable.member.repository.mariadb.ExperienceRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import yesable.member.repository.mariadb.PrivateUserRepository;
 
 @GrpcService
 public class UserService extends UserServiceGrpc.UserServiceImplBase{
 
-
     private final PrivateUserRepository privateUserRepository;
     private final ExperienceRepository experienceRepository;
-
     private final MemberMapper memberMapper;
+    private final PasswordEncoder passwordEncoder; // PasswordEncoder 추가
 
-    public UserService( PrivateUserRepository privateUserRepository,  ExperienceRepository experienceRepository) {
+    public UserService(PrivateUserRepository privateUserRepository, ExperienceRepository experienceRepository, PasswordEncoder passwordEncoder) {
         this.privateUserRepository = privateUserRepository;
-        this.experienceRepository=experienceRepository;
+        this.experienceRepository = experienceRepository;
+        this.passwordEncoder = passwordEncoder; // PasswordEncoder 주입
         this.memberMapper = MemberMapper.INSTANCE;
     }
 
@@ -38,50 +39,45 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase{
         String message;
         boolean result;
 
+        if (request.hasPrivateuser()) {
+            // DTO로 변환
+            PrivateUserDTO privateuserdto = memberMapper.grpcToDto(request.getPrivateuser());
+            // 비밀번호 암호화
+            String encodedPassword = passwordEncoder.encode(privateuserdto.getPassword());
+            privateuserdto.setPassword(encodedPassword);  // 암호화된 비밀번호를 DTO에 설정
 
-        if(request.hasPrivateuser()) {
-            PrivateUserDTO privateuserdto=memberMapper.grpcToDto(request.getPrivateuser());
+            //사용자 로그인 id 암호화
+            String encodedId=passwordEncoder.encode(privateuserdto.getId());
+            privateuserdto.setId(encodedId);
 
-            PrivateUser privateuser=memberMapper.dtoToEntity(privateuserdto);
 
+            // DTO를 엔티티로 변환
+            PrivateUser privateuser = memberMapper.dtoToEntity(privateuserdto);
+
+            // PrivateUser 저장
             privateUserRepository.save(privateuser);
 
-
-            for(Experience ex:privateuser.getExperiences()) {
+            // Experience 저장
+            for (Experience ex : privateuser.getExperiences()) {
                 ex.setPrivateUser(privateuser);
-
-                experienceRepository.save(ex); //experience를 소유한 privateUser 를 나타내기 위해 ID값이 필요한데, 따라서 우선 PrivateUser를 저장한 후 Ex를 저장
-
+                experienceRepository.save(ex);
             }
 
-
-            message = "Private User registered successful";
-
-
-            result=true;
-
-        }else {
-
-            message = "register failed";
+            message = "Private User registered successfully";
+            result = true;
+        } else {
+            message = "Register failed";
             result = false;
         }
 
-        RegisterUserResponse response= RegisterUserResponse.newBuilder()
+        RegisterUserResponse response = RegisterUserResponse.newBuilder()
                 .setMessage(message)
                 .setSuccess(result)
                 .build();
 
         responseobserver.onNext(response);
         responseobserver.onCompleted();
-
-
-
-
-
     }
-
-
-
 
     @Transactional
     @Override
@@ -104,5 +100,9 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase{
         responseobserver.onCompleted();
     }
 
+    @Transactional
+    @Override
+    public void getPrivateUserId(GetPrivateUserIdRequest request, StreamObserver<GetPrivateUserIdResponse> responseobserver) {
 
+    }
 }

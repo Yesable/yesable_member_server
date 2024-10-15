@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Set;
 
 @Getter
+@Setter
 @SuperBuilder
 public class PrivateUserDTO extends CoreUserDTO{
     private String username;

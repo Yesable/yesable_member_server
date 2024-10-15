@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.util.Collection;
 
 @Getter
+@Setter
 @SuperBuilder
 public class CoreUserDTO {
 
