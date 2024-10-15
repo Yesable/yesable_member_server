@@ -79,10 +79,11 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase{
         responseobserver.onCompleted();
     }
 
+
     @Transactional
     @Override
-    public void getPrivateUser(GetPrivateUserRequest request, StreamObserver<GetPrivateUserResponse> responseobserver) {
-        PrivateUser privateUserentity=privateUserRepository.findPrivateUserById(request.getUserId());
+    public void getPrivateUserId(GetPrivateUserIdRequest request, StreamObserver<GetPrivateUserIdResponse> responseobserver) {
+        PrivateUser privateUserentity=privateUserRepository.findPrivateUserById(request.getEncuserId());
 
         if(privateUserentity==null) {
             responseobserver.onError(new StatusRuntimeException(Status.NOT_FOUND.withDescription("PrivateUser Not Found")));
@@ -91,18 +92,13 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase{
 
 
         PrivateUserGRPC privateUserGRPC=memberMapper.dtoToGrpc(privateUserDTO);
-        GetPrivateUserResponse response = GetPrivateUserResponse.newBuilder()
-                .setPrivateUser(privateUserGRPC)
+        GetPrivateUserIdResponse response = GetPrivateUserIdResponse.newBuilder()
+                .setUserseq(privateUserDTO.getUserSeq())
                 .build();
 
         // 응답 전송
         responseobserver.onNext(response);
         responseobserver.onCompleted();
-    }
-
-    @Transactional
-    @Override
-    public void getPrivateUserId(GetPrivateUserIdRequest request, StreamObserver<GetPrivateUserIdResponse> responseobserver) {
 
     }
 }
