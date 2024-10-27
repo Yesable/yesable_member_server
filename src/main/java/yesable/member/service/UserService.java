@@ -43,12 +43,12 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase{
             // DTO로 변환
             PrivateUserDTO privateuserdto = memberMapper.grpcToDto(request.getPrivateuser());
             // 비밀번호 암호화
-            String encodedPassword = passwordEncoder.encode(privateuserdto.getPassword());
-            privateuserdto.setPassword(encodedPassword);  // 암호화된 비밀번호를 DTO에 설정
+            //String encodedPassword = passwordEncoder.encode(privateuserdto.getPassword());
+            privateuserdto.setPassword(privateuserdto.getPassword());  //  비밀번호를 DTO에 설정
 
             //사용자 로그인 id 암호화
-            String encodedId=passwordEncoder.encode(privateuserdto.getId());
-            privateuserdto.setId(encodedId);
+          //  String encodedId=passwordEncoder.encode(privateuserdto.getId());
+            privateuserdto.setId(privateuserdto.getId());
 
 
             // DTO를 엔티티로 변환
@@ -83,7 +83,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase{
     @Transactional
     @Override
     public void getPrivateUserId(GetPrivateUserIdRequest request, StreamObserver<GetPrivateUserIdResponse> responseobserver) {
-        PrivateUser privateUserentity=privateUserRepository.findPrivateUserById(request.getEncuserId());
+        PrivateUser privateUserentity=privateUserRepository.findPrivateUserById(request.getUserId());
 
         if(privateUserentity==null) {
             responseobserver.onError(new StatusRuntimeException(Status.NOT_FOUND.withDescription("PrivateUser Not Found")));
