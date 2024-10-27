@@ -13,6 +13,7 @@ service UserService {
 
 
 
+
 }
 //------------------------------------------------- enum v
 enum InterestFieldGRPC {
@@ -102,8 +103,8 @@ message RegisterUserResponse {
 
 
 message GetPrivateUserIdRequest {
-  string encuserId=1; //암호화된 사용자 로그인 ID
-  string encuserpassword=2; //암호화된 사용자 로그인 비밀번호
+  string userId=1; // 사용자 로그인 ID
+  string userpassword=2; // 사용자 로그인 비밀번호
 }
 
 message GetPrivateUserIdResponse {
