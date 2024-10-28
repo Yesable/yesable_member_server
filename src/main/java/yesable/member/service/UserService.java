@@ -101,5 +101,71 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase{
         responseobserver.onCompleted();
 
     }
-}
 
+
+    @Transactional
+    @Override
+    public void updateUser(UpdateUserRequest request, StreamObserver<UpdateUserResponse> responseObserver) {
+        String message;
+        boolean result;
+
+        if (request.hasPrivateuser()) {
+            // DTO로 변환
+            PrivateUserDTO privateUserDTO = memberMapper.grpcToDto(request.getPrivateuser());
+
+            // 사용자 ID로 기존 사용자 검색
+            PrivateUser existingUser = privateUserRepository.findPrivateUserById(privateUserDTO.getId());
+
+            if (existingUser == null) {
+                responseObserver.onError(new StatusRuntimeException(Status.NOT_FOUND.withDescription("User not found")));
+                return;
+            }
+
+            // 변경된 정보만 업데이트
+            // ID 변경 가능
+            if (privateUserDTO.getId() != null && !privateUserDTO.getId().isEmpty()) {
+                existingUser.setId(privateUserDTO.getId());
+            }
+
+            // 비밀번호가 있는 경우에만 암호화하여 업데이트
+            if (privateUserDTO.getPassword() != null && !privateUserDTO.getPassword().isEmpty()) {
+                String encodedPassword = passwordEncoder.encode(privateUserDTO.getPassword());
+                existingUser.setPassword(encodedPassword);
+            }
+
+            // 다른 CoreUser 필드들 업데이트
+            if (privateUserDTO.getName() != null) {
+                existingUser.setName(privateUserDTO.getName());
+            }
+            if (privateUserDTO.getEmail() != null) {
+                existingUser.setEmail(privateUserDTO.getEmail());
+            }
+            if (privateUserDTO.getPhoneNumber() != null) {
+                existingUser.setPhoneNumber(privateUserDTO.getPhoneNumber());
+            }
+            if (privateUserDTO.getGender() != null) {
+                existingUser.setGender(privateUserDTO.getGender());
+            }
+            if (privateUserDTO.getDateOfBirth() != null) {
+                existingUser.setDateOfBirth(privateUserDTO.getDateOfBirth());
+            }
+
+            // 변경된 사용자 정보를 저장
+            privateUserRepository.save(existingUser);
+
+            message = "User updated successfully";
+            result = true;
+        } else {
+            message = "Update failed";
+            result = false;
+        }
+
+        UpdateUserResponse response = UpdateUserResponse.newBuilder()
+                .setMessage(message)
+                .setSuccess(result)
+                .build();
+
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+}

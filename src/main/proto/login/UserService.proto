@@ -9,9 +9,7 @@ package user;
 service UserService {
     rpc RegisterUser(RegisterUserRequest) returns (RegisterUserResponse);
     rpc GetPrivateUserId(GetPrivateUserIdRequest) returns(GetPrivateUserIdResponse);
-
-
-
+    rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse);
 
 
 }
@@ -94,7 +92,16 @@ message RegisterUserRequest {
   PrivateUserGRPC privateuser=1;
 }
 
+message UpdateUserRequest {
+  PrivateUserGRPC privateuser=1;
+}
+
 message RegisterUserResponse {
+  string message = 1;
+  bool success = 2;
+}
+
+message UpdateUserResponse {
   string message = 1;
   bool success = 2;
 }
