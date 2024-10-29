@@ -48,7 +48,7 @@ public interface MemberMapper {
     @Mapping(source="coreUser.password",target="password")
     @Mapping(source="coreUser.email",target="email")
     @Mapping(source="coreUser.phoneNumber",target="phoneNumber")
-    @Mapping(source="coreUser.name",target="name")
+    @Mapping(source="coreUser.username",target="username")
     @Mapping(source="coreUser.gender",target="gender")
     @Mapping(source="coreUser.dateOfBirth",target="dateOfBirth")
     @Mapping(source="coreUser.authorities",target="authorities")
@@ -59,7 +59,7 @@ public interface MemberMapper {
     @Mapping(source = "password", target = "coreUser.password")
     @Mapping(source = "email", target = "coreUser.email")
     @Mapping(source = "phoneNumber", target = "coreUser.phoneNumber")
-    @Mapping(source = "name", target = "coreUser.name")
+    @Mapping(source = "username", target = "coreUser.username")
     @Mapping(source = "gender", target = "coreUser.gender")
     @Mapping(source = "dateOfBirth", target = "coreUser.dateOfBirth")
     PrivateUserGRPC dtoToGrpc(PrivateUserDTO dto);

@@ -125,7 +125,7 @@ message CoreUserGRPC {
   string password=2;
   string email=3;
   string phoneNumber=4;
-  string name=5;
+  string username=5;
 
 
   GenderGRPC gender=6;
@@ -137,24 +137,24 @@ message CoreUserGRPC {
 
 message PrivateUserGRPC {
   CoreUserGRPC core_user = 1;
-  string username=2;
-  string location=3;
+
+  string location=2;
 
 
-  repeated InterestFieldGRPC interestField=4;
-  repeated WorkTypeGRPC workType=5;
+  repeated InterestFieldGRPC interestField=3;
+  repeated WorkTypeGRPC workType=4;
 
 
-  repeated string skills=6;
+  repeated string skills=5;
 
-  EducationlevelGRPC educationlevel = 7;
-  string personality=8;
-  string hobbies=9;
-  string supportneeds=10;
+  EducationlevelGRPC educationlevel = 6;
+  string personality=7;
+  string hobbies=8;
+  string supportneeds=9;
 
 
-  DisabilitytypeGRPC disabilitytype=11;
-  repeated ExperienceGRPC experiences=12;
+  DisabilitytypeGRPC disabilitytype=10;
+  repeated ExperienceGRPC experiences=11;
 }
 
 

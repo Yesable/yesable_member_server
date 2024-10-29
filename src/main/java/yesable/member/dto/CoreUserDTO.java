@@ -22,7 +22,7 @@ public class CoreUserDTO {
     private String password;
     private String email;
     private String phoneNumber;
-    private String name;
+    private String username;
     private Gender gender;
     private LocalDate dateOfBirth;
     private Collection<GrantedAuthority> authorities;

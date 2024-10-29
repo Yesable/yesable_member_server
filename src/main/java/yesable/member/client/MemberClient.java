@@ -29,14 +29,13 @@ public class MemberClient { //백엔드 단에서만 사용하는 gRPC 테스트
                 .setPassword("password123")
                 .setEmail("john.doe@example.com")
                 .setPhoneNumber("123-456-7890")
-                .setName("John Doe")
+                .setUsername("John Doe")
                 .setGender(GenderGRPC.forNumber(1))
                 .setDateOfBirth(dateOfBirth)
                 .build();
 
         PrivateUserGRPC privateUser = PrivateUserGRPC.newBuilder()
                 .setCoreUser(coreUser)
-                .setUsername("johnny")
                 .setLocation("New York")
                 .addInterestField(InterestFieldGRPC.forNumber(1))
                 .addInterestField(InterestFieldGRPC.forNumber(1))

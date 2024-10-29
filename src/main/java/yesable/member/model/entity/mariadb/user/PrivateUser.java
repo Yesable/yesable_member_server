@@ -18,7 +18,7 @@ import java.util.Set;
 @Setter
 public class PrivateUser extends CoreUser {
 
-    private String username;
+
 
     private String location; // 상세하지 않고 적절한 지역단위로, 온보딩
 

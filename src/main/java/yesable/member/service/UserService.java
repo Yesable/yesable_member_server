@@ -42,17 +42,17 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase{
         if (request.hasPrivateuser()) {
             // DTO로 변환
             PrivateUserDTO privateuserdto = memberMapper.grpcToDto(request.getPrivateuser());
-            // 비밀번호 암호화
-            //String encodedPassword = passwordEncoder.encode(privateuserdto.getPassword());
+            System.out.println(request.getPrivateuser().getCoreUser().getUsername()+"asdf2 and "+request.getPrivateuser().getCoreUser().getPassword()+"\n\n\n");
+
             privateuserdto.setPassword(privateuserdto.getPassword());  //  비밀번호를 DTO에 설정
 
-            //사용자 로그인 id 암호화
-          //  String encodedId=passwordEncoder.encode(privateuserdto.getId());
+
             privateuserdto.setId(privateuserdto.getId());
 
 
             // DTO를 엔티티로 변환
             PrivateUser privateuser = memberMapper.dtoToEntity(privateuserdto);
+            System.out.println(privateuser.getUsername()+"asdf3 \n\n\n");
 
             // PrivateUser 저장
             privateUserRepository.save(privateuser);

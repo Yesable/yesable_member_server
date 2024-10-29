@@ -17,7 +17,6 @@ import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name="usertype")
 @Getter
 @Setter //mapstruct
 public class CoreUser implements UserDetails {
@@ -30,13 +29,13 @@ public class CoreUser implements UserDetails {
 
     private String password;
 
-   // private String usertype; //개인, 기업회원 구분 DiscriminatorColumn으로 대체
+
     
     private String email;
 
     private String phoneNumber;
 
-    private String name;
+    private String username;
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
@@ -54,10 +53,6 @@ public class CoreUser implements UserDetails {
 
 
 
-    @Override
-    public String getUsername() {
-        return this.id;
-    }
 
     @Override
     public boolean isAccountNonExpired() {

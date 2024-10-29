@@ -18,7 +18,7 @@ import java.util.Set;
 @Setter
 @SuperBuilder
 public class PrivateUserDTO extends CoreUserDTO{
-    private String username;
+
     private String location;
     private Set<Interestfield> interestField;
     private Set<Worktype> workType;
